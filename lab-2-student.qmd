@@ -97,15 +97,11 @@ Columns: 15
 
 <!-- You can either write code here or in the code chunk for #1, but I **must** see the code you used to address this question!  -->
 
-character:
-species_id, sex, day_of_week, plot_type, genus, species, taxa
+character: species_id, sex, day_of_week, plot_type, genus, species, taxa
 
-double:
-record_id, month, day, year, plot_id, hindfoot_length, weight
+double: record_id, month, day, year, plot_id, hindfoot_length, weight
 
-date:
-date
-
+date: date
 
 # Exploratory Data Analysis with **`ggplot2`**
 
@@ -131,6 +127,11 @@ Let's get started!
 ```{r}
 #| label: scatterplot
 
+ggplot(data = surveys,
+       mapping = aes(x = weight,
+                     y = hindfoot_length)) +
+  geom_jitter()
+
 ```
 
 We can see there are **a lot** of points plotted on top of each other. Let's try and modify this plot to extract more information from it.
@@ -139,21 +140,72 @@ We can see there are **a lot** of points plotted on top of each other. Let's try
 
 <!-- Add code to the scatterplot you created for question 4! -->
 
-Despite our best efforts there is still a substantial amount of overplotting occurring in our scatterplot. Let's try splitting the dataset into smaller subsets and see if that allows for us to see the trends a bit better.
+```{r}
+#| label: scatterplot
+
+ggplot(data = surveys,
+       mapping = aes(x = weight,
+                     y = hindfoot_length,
+                     alpha = 0.3)) +
+  geom_jitter()
+
+```
 
 **6. Facet your scatterplot by `species`.**
 
 <!-- Add code to the scatterplot you created for question 4 (and modified for question 5)! -->
 
+```{r}
+#| label: scatterplot
+
+ggplot(data = surveys,
+       mapping = aes(x = weight,
+                     y = hindfoot_length,
+                     alpha = 0.3)) +
+  geom_jitter() +
+  facet_wrap(~species)
+```
+
 **7. No plot is complete without axis labels and a title. Include reader friendly labels and a title to your plot.**
 
 <!-- Continue to modify the plot you originally created for question 4! -->
+
+```{r}
+#| label: scatterplot
+
+ggplot(data = surveys,
+       mapping = aes(x = weight,
+                     y = hindfoot_length,
+                     alpha = 0.3)) +
+  geom_jitter() +
+  facet_wrap(~species) +
+  labs(title = "Weight vs. Hindfoot Length in Species",
+       x = "Weight (g)",
+       y = "Hindfoot Length (mm)",
+       alpha = "")
+```
 
 It takes a larger cognitive load to read text that is rotated. It is common practice in many journals and media outlets to move the $y$-axis label to the top of the graph under the title.
 
 **8. Specify your** $y$-axis label to be empty and move the $y$-axis label into the subtitle.
 
 <!-- Continue to modify the plot you originally created for question 4! -->
+
+```{r}
+#| label: scatterplot
+
+ggplot(data = surveys,
+       mapping = aes(x = weight,
+                     y = hindfoot_length,
+                     alpha = 0.3)) +
+  geom_jitter() +
+  facet_wrap(~species) +
+  labs(title = "Weight vs. Hindfoot Length in Species",
+       x = "Weight (g)",
+       y = "",
+       alpha = "",
+       subtitle = "Hindfoot Length (mm)")
+```
 
 ## Boxplots
 
