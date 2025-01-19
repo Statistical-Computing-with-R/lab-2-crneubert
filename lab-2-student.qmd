@@ -7,6 +7,8 @@ editor: source
     wrap: 72
 embed-resources: true
 code-tools: true
+echo: true
+code-fold: true
 ---
 
 # Part 1: GitHub Workflow
@@ -113,9 +115,9 @@ To build a `ggplot()`, we will use the following basic template that can be used
 #| eval: false
 #| label: ggplot-template-code
 
-ggplot(data = <DATA>,
-       mapping = aes(<VARIABLE MAPPINGS>)) +
-  <GEOM_FUNCTION>()
+# ggplot(data = <DATA>,
+       # mapping = aes(<VARIABLE MAPPINGS>)) +
+  # <GEOM_FUNCTION>()
 ```
 
 Let's get started!
@@ -217,9 +219,24 @@ ggplot(data = surveys,
 
 **10. Create side-by-side boxplots to visualize the distribution of weight within each species.**
 
+```{r}
+ggplot(data = surveys,
+       mapping = aes(x = species,
+                     y = weight)) +
+  geom_boxplot()
+```
+
 A fundamental complaint of boxplots is that they do not plot the raw data. However, with **ggplot** we can add the raw points on top of the boxplots!
 
 **11. Add another layer to your previous plot that plots each observation.**
+
+```{r}
+ggplot(data = surveys,
+       mapping = aes(x = species,
+                     y = weight)) +
+  geom_boxplot() +
+  geom_point()
+```
 
 <!-- Modify the plot you made for question 10! -->
 
@@ -229,11 +246,28 @@ Alright, this should look less than optimal. Your points should appear rather st
 
 <!-- Continue to modify the plot you made for question 10! -->
 
+```{r}
+ggplot(data = surveys,
+       mapping = aes(x = species,
+                     y = weight)) +
+  geom_boxplot() +
+  geom_jitter()
+```
+
 That should look a bit better! But its really hard to see the points when everything is black.
 
 **13. Set the `color` aesthetic in `geom_jitter()` to change the color of the points and add set the `alpha` aesthetic to add transparency.** You are welcome to use whatever color you wish! Some of my favorites are "orange3" and "steelblue".
 
 <!-- Continue to modify the plot you made for question 10! -->
+
+```{r}
+ggplot(data = surveys,
+       mapping = aes(x = species,
+                     y = weight)) +
+  geom_boxplot() +
+  geom_jitter(color = "steelblue",
+              alpha = 0.3)
+```
 
 Great! Now that you can see the points, you should notice something odd: there are two colors of points still being plotted. Some of the observations are being plotted twice, once from `geom_boxplot()` as outliers and again from `geom_jitter()`!
 
@@ -241,11 +275,32 @@ Great! Now that you can see the points, you should notice something odd: there a
 
 <!-- Continue to modify the plot you made for question 10! -->
 
+```{r}
+ggplot(data = surveys,
+       mapping = aes(x = species,
+                     y = weight)) +
+  geom_boxplot(outliers = FALSE) +
+  geom_jitter(color = "steelblue",
+              alpha = 0.3)
+```
+
 Some small changes can make **big** differences to plots. One of these changes are better labels for a plot's axes and legend.
 
 **15. Modify the** $x$-axis and $y$-axis labels to describe what is being plotted. Be sure to include any necessary units! You might also be getting overlap in the species names -- use `theme(axis.text.x = ____)` or `theme(axis.text.y = ____)` to turn the species axis labels 45 degrees.
 
 <!-- Continue to modify the plot you made for question 10! -->
+
+```{r}
+ggplot(data = surveys,
+       mapping = aes(x = species,
+                     y = weight)) +
+  geom_boxplot(outliers = FALSE) +
+  geom_jitter(color = "steelblue",
+              alpha = 0.3) +
+  labs(x = "Species",
+       y = "Weight of Animal (g)") +
+  theme(axis.text.x = element_text(angle = 45))
+```
 
 Some people (and journals) prefer for boxplots to be stacked with a specific orientation! Let's practice changing the orientation of our boxplots.
 
@@ -253,7 +308,15 @@ Some people (and journals) prefer for boxplots to be stacked with a specific ori
 
 ```{r}
 #| label: rotated-boxplot
-
+ggplot(data = surveys,
+       mapping = aes(y = species,
+                     x = weight)) +
+  geom_boxplot(outliers = FALSE) +
+  geom_jitter(color = "steelblue",
+              alpha = 0.3) +
+  labs(y = "Species",
+       x = "Weight of Animal (g)") +
+  theme(axis.text.y = element_text(angle = 45))
 ```
 
 Notice how vertically stacked boxplots make the species labels more readable than horizontally stacked boxplots (even when the axis labels are rotated). This is good practice!
@@ -277,12 +340,14 @@ We're going to use the `aov()` function to carry out an ANOVA.
 ```{r}
 #| label: anova
 
-species_mod <- aov()
+species_mod <- aov(weight ~ species, data = surveys)
 
 summary(species_mod)
 ```
 
 **18. Based on the results of the ANOVA F-test, draw a conclusion in context of the hypotheses. Make sure to cite appropriate output from above.**
+
+Based on the results of the ANOVA F-test, I have significant evidence to conclude that at least one species' mean weight is different from all or another species mean weight. The F-statistic of nearly 20000 corresponds to a p-value of near 0.
 
 # Lab 2 Submission
 
