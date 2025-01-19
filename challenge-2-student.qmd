@@ -1,14 +1,13 @@
 ---
 title: "Challenge 2: Spicing things up with ggplot2"
-author: "Add your name!"
+author: "Carson Neubert"
 format: html
 editor: source
-  markdown: 
-    wrap: 72
 embed-resources: true
 code-tools: true
 self-contained: true
 echo: true
+code-fold: true
 ---
 
 For this week's Challenge, you will have three different options to explore. I've arranged these options in terms of their "spiciness," or the difficulty of completing the task. **You are only required to complete one task, but if you are interested in exploring more than one, feel free!**
@@ -52,10 +51,12 @@ A "superior" alternative is the density plot. However, `ggplot2` does not allow 
 
 ```{r}
 #| label: ridge-plot
+#| messages: false
 ggplot(data = surveys,
        mapping = aes(y = species,
                      x = weight)) +
-  geom_density_ridges(mapping = aes(scale = 3)) +
+  geom_density_ridges(mapping = aes(scale = 3),
+                      bandwidth = 5) +
   #geom_jitter(color = "steelblue",
              # alpha = 0.3) +
   labs(y = "Species",
